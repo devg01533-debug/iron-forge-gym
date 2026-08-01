@@ -1,0 +1,316 @@
+{
+  "name": "Gym Lead Capture",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gym-lead-capture",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Receive Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1120,
+        0
+      ],
+      "webhookId": "44cdaf57-5d7d-4673-9809-e4a4a15653c7"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || {};\nconst headers = $input.first().json.headers || {};\nconst str = (v) => (typeof v === 'string' ? v.trim() : v == null ? '' : String(v).trim());\nconst num = (v) => {\n  const s = str(v);\n  return s === '' ? null : Number(s);\n};\nconst uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {\n  const r = (Math.random() * 16) | 0;\n  const v = c === 'x' ? r : (r & 0x3) | 0x8;\n  return v.toString(16);\n});\nconst email = str(body.email).toLowerCase();\nconst phone = str(body.phone).replace(/[^0-9+]/g, '');\nconst age = num(body.age);\nconst errors = [];\nif (!str(body.first_name)) errors.push('first_name is required');\nif (!str(body.last_name)) errors.push('last_name is required');\nif (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) errors.push('email is invalid');\nif (!phone || phone.length < 7) errors.push('phone is invalid');\nif (body.marketing_consent !== true) errors.push('marketing_consent must be true');\nif (age === null || Number.isNaN(age) || age < 13 || age > 90) errors.push('age must be between 13 and 90');\nconst lead = {\n  request_id: uuid(),\n  lead_id: uuid(),\n  submitted_at: new Date().toISOString(),\n  status: 'New',\n  source: str(body.source) || 'website',\n  first_name: str(body.first_name),\n  last_name: str(body.last_name),\n  phone,\n  email,\n  age,\n  gender: str(body.gender) || null,\n  height: num(body.height),\n  weight: num(body.weight),\n  fitness_goal: str(body.fitness_goal) || null,\n  membership_plan: str(body.membership_plan) || null,\n  workout_time: str(body.workout_time) || null,\n  experience_level: str(body.experience_level) || null,\n  medical_conditions: str(body.medical_conditions) || null,\n  address: str(body.address) || null,\n  city: str(body.city) || null,\n  state: str(body.state) || null,\n  pincode: str(body.pincode) || null,\n  marketing_consent: body.marketing_consent === true,\n  notes: str(body.notes) || null,\n  ip_address: String(headers['x-forwarded-for'] || headers['x-real-ip'] || '').split(',')[0].trim() || null,\n  user_agent: str(headers['user-agent']) || null\n};\nconsole.log('[Prepare Lead]', JSON.stringify({ request_id: lead.request_id, email: lead.email, ip: lead.ip_address, errors }));\nreturn [{\n  json: {\n    valid: errors.length === 0,\n    error_code: errors.length ? 'validation' : null,\n    errors,\n    request_id: lead.request_id,\n    lead,\n    logs: [{ request_id: lead.request_id, received_at: lead.submitted_at }]\n  }\n}];"
+      },
+      "name": "Prepare Lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "Validate Request",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -640,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "gym_leads",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "request_id",
+              "fieldValue": "={{ $json.lead.request_id }}"
+            },
+            {
+              "fieldId": "lead_id",
+              "fieldValue": "={{ $json.lead.lead_id }}"
+            },
+            {
+              "fieldId": "submitted_at",
+              "fieldValue": "={{ $json.lead.submitted_at }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.lead.status }}"
+            },
+            {
+              "fieldId": "source",
+              "fieldValue": "={{ $json.lead.source }}"
+            },
+            {
+              "fieldId": "first_name",
+              "fieldValue": "={{ $json.lead.first_name }}"
+            },
+            {
+              "fieldId": "last_name",
+              "fieldValue": "={{ $json.lead.last_name }}"
+            },
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $json.lead.phone }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $json.lead.email }}"
+            },
+            {
+              "fieldId": "age",
+              "fieldValue": "={{ $json.lead.age }}"
+            },
+            {
+              "fieldId": "gender",
+              "fieldValue": "={{ $json.lead.gender }}"
+            },
+            {
+              "fieldId": "height",
+              "fieldValue": "={{ $json.lead.height }}"
+            },
+            {
+              "fieldId": "weight",
+              "fieldValue": "={{ $json.lead.weight }}"
+            },
+            {
+              "fieldId": "fitness_goal",
+              "fieldValue": "={{ $json.lead.fitness_goal }}"
+            },
+            {
+              "fieldId": "membership_plan",
+              "fieldValue": "={{ $json.lead.membership_plan }}"
+            },
+            {
+              "fieldId": "workout_time",
+              "fieldValue": "={{ $json.lead.workout_time }}"
+            },
+            {
+              "fieldId": "experience_level",
+              "fieldValue": "={{ $json.lead.experience_level }}"
+            },
+            {
+              "fieldId": "medical_conditions",
+              "fieldValue": "={{ $json.lead.medical_conditions }}"
+            },
+            {
+              "fieldId": "address",
+              "fieldValue": "={{ $json.lead.address }}"
+            },
+            {
+              "fieldId": "city",
+              "fieldValue": "={{ $json.lead.city }}"
+            },
+            {
+              "fieldId": "state",
+              "fieldValue": "={{ $json.lead.state }}"
+            },
+            {
+              "fieldId": "pincode",
+              "fieldValue": "={{ $json.lead.pincode }}"
+            },
+            {
+              "fieldId": "marketing_consent",
+              "fieldValue": "={{ $json.lead.marketing_consent }}"
+            },
+            {
+              "fieldId": "notes",
+              "fieldValue": "={{ $json.lead.notes }}"
+            },
+            {
+              "fieldId": "ip_address",
+              "fieldValue": "={{ $json.lead.ip_address }}"
+            },
+            {
+              "fieldId": "user_agent",
+              "fieldValue": "={{ $json.lead.user_agent }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Save Lead",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const row = $input.first().json;\nconst envelope = {\n  success: true,\n  request_id: row.request_id,\n  lead_id: row.lead_id,\n  message: 'Application received. A coach will contact you shortly.',\n  timestamp: new Date().toISOString()\n};\nconsole.log('[Success]', JSON.stringify({ request_id: envelope.request_id, lead_id: envelope.lead_id }));\nreturn [{ json: envelope }];"
+      },
+      "name": "Build Success Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst errText = String(input.error || '').toLowerCase();\nlet errorCode = input.error_code || 'save_failed';\nlet message = 'We could not save your application. Please try again.';\nif (errorCode === 'validation') {\n  message = 'Please fill all required fields correctly and consent to be contacted.';\n} else if (/duplicate|23505|already exists/.test(errText)) {\n  errorCode = 'duplicate';\n  message = 'This email is already registered. Our team will contact you shortly.';\n}\nconst envelope = {\n  success: false,\n  request_id: input.request_id || $node['Prepare Lead'].json.request_id,\n  error_code: errorCode,\n  message,\n  timestamp: new Date().toISOString()\n};\nif (errText) envelope.details = errText.slice(0, 300);\nconsole.log('[Error]', JSON.stringify({ request_id: envelope.request_id, error_code: envelope.error_code }));\nreturn [{ json: envelope }];"
+      },
+      "name": "Build Error Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Receive Lead": {
+      "main": [
+        [
+          {
+            "node": "Prepare Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Lead": {
+      "main": [
+        [
+          {
+            "node": "Validate Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Request": {
+      "main": [
+        [
+          {
+            "node": "Save Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Lead": {
+      "main": [
+        [
+          {
+            "node": "Build Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Build Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Success Response": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Error Response": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "active": false
+}

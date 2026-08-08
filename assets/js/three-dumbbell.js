@@ -5,7 +5,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const canvas = document.getElementById("webgl");
   const supportsWebGL =
-    !REDUCED && canvas && window.WebGLRenderingContext && (() => {
+    canvas && window.WebGLRenderingContext && (() => {
       try {
         const ctx = canvas.getContext("webgl2") || canvas.getContext("webgl");
         return Boolean(ctx);
@@ -338,15 +338,21 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   let lastTime = performance.now();
   function loop(now) {
     if (!running) return;
-    requestAnimationFrame(loop);
+    if (!REDUCED) requestAnimationFrame(loop);
 
     const dt = Math.min((now - lastTime) / 1000, 0.05);
     lastTime = now;
     const time = now / 1000;
 
-    updateScroll();
-    applyDumbbellTransform(scrollProgress, time, dt);
-    animateParticles(time);
+    if (REDUCED) {
+      const pos = PATH.getPoint(0.02);
+      dumbbell.position.copy(pos);
+      dumbbell.scale.setScalar(currentScale(0.02));
+    } else {
+      updateScroll();
+      applyDumbbellTransform(scrollProgress, time, dt);
+      animateParticles(time);
+    }
     renderer.render(scene, camera);
   }
 

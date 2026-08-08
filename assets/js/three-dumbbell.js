@@ -64,9 +64,9 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   }
 
   function addLights() {
-    scene.add(new THREE.AmbientLight(0xffffff, 0.18));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.22));
 
-    const key = new THREE.DirectionalLight(0xffffff, 2.2);
+    const key = new THREE.DirectionalLight(0xffffff, 2.6);
     key.position.set(5, 6, 4);
     key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024);
@@ -79,19 +79,19 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     key.shadow.radius = 8;
     scene.add(key);
 
-    const fill = new THREE.DirectionalLight(0x8b5cf6, 0.9);
+    const fill = new THREE.DirectionalLight(0x8b5cf6, 1.4);
     fill.position.set(-6, -2, 2);
     scene.add(fill);
 
-    const rim = new THREE.DirectionalLight(0xc084fc, 0.8);
+    const rim = new THREE.DirectionalLight(0xc084fc, 1.3);
     rim.position.set(0, -4, -3);
     scene.add(rim);
 
-    const purple = new THREE.PointLight(0x8b5cf6, 26, 22, 2);
+    const purple = new THREE.PointLight(0x8b5cf6, 40, 22, 2);
     purple.position.set(-4.5, -2.5, 2.5);
     scene.add(purple);
 
-    const glow = new THREE.PointLight(0xc084fc, 20, 20, 2);
+    const glow = new THREE.PointLight(0xc084fc, 32, 20, 2);
     glow.position.set(3.5, 2.5, -2.5);
     scene.add(glow);
   }
@@ -99,13 +99,41 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   function metalMaterial(color = 0x0d0d0f, roughness = 0.3) {
     const mat = new THREE.MeshStandardMaterial({
       color,
-      metalness: 1,
+      metalness: 0.9,
       roughness,
-      envMapIntensity: 1.35,
+      envMapIntensity: 1.8,
       transparent: true
     });
     fadeMaterials.push(mat);
     return mat;
+  }
+
+  function addGlowHalo() {
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+    const grad = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    grad.addColorStop(0, "rgba(168, 85, 247, 0.55)");
+    grad.addColorStop(0.35, "rgba(139, 92, 246, 0.28)");
+    grad.addColorStop(0.7, "rgba(139, 92, 246, 0.1)");
+    grad.addColorStop(1, "rgba(139, 92, 246, 0)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 256, 256);
+    const tex = new THREE.CanvasTexture(canvas);
+    const halo = new THREE.Sprite(
+      new THREE.SpriteMaterial({
+        map: tex,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        opacity: 0.9
+      })
+    );
+    halo.scale.set(6.2, 6.2, 1);
+    halo.position.z = -0.4;
+    halo.position.y = 0.2;
+    dumbbell.add(halo);
   }
 
   function buildDumbbell() {
@@ -113,14 +141,14 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
     const bar = new THREE.Mesh(
       new THREE.CylinderGeometry(0.085, 0.085, 2.4, 32),
-      metalMaterial(0x0c0c0e, 0.25)
+      metalMaterial(0x1a1a20, 0.25)
     );
     bar.rotation.z = Math.PI / 2;
     bar.castShadow = true;
     dumbbell.add(bar);
 
     const plateGeo = new THREE.CylinderGeometry(0.56, 0.56, 0.15, 48);
-    const plateMat = metalMaterial(0x111114, 0.35);
+    const plateMat = metalMaterial(0x232329, 0.35);
 
     const innerPlate = (x) => {
       const plate = new THREE.Mesh(plateGeo, plateMat);
@@ -134,7 +162,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
         new THREE.MeshStandardMaterial({
           color: 0x8b5cf6,
           emissive: 0x8b5cf6,
-          emissiveIntensity: 2.2,
+          emissiveIntensity: 3.2,
           metalness: 0.4,
           roughness: 0.35,
           transparent: true
@@ -173,6 +201,8 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     outerPlate(1.18);
     collar(-1.42);
     collar(1.42);
+
+    addGlowHalo();
 
     const shadowMat = new THREE.MeshStandardMaterial({
       color: 0x000000,
@@ -232,8 +262,8 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   }
 
   const PATH = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(1.9, 0.35, 0.6),
-    new THREE.Vector3(2.5, 0.95, -0.4),
+    new THREE.Vector3(0.2, 0.25, 0.6),
+    new THREE.Vector3(1.1, 0.95, -0.4),
     new THREE.Vector3(-2.7, 1.1, -2.6),
     new THREE.Vector3(2.7, -1.3, -3.0),
     new THREE.Vector3(-2.8, 0.9, -3.2),
@@ -251,7 +281,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   }
 
   function currentScale(p) {
-    const hero = 0.42 * gaussian(p, 0.02, 0.05);
+    const hero = 0.62 * gaussian(p, 0.02, 0.05);
     const form = 0.55 * gaussian(p, 0.9, 0.06);
     const gallery = 0.16 * gaussian(p, 0.72, 0.06);
     return BASE_SCALE * (1 + hero + gallery + form);

@@ -1,691 +1,593 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Iron Forge Gym - AI-powered fitness. Premium coaching, intelligent lead scoring, and results that speak for themselves.">
-  <meta name="theme-color" content="#050505">
-  <title>Iron Forge Gym - AI-Powered Fitness</title>
-
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B5CF6' stroke-width='2'%3E%3Crect x='2' y='9' width='3' height='6' rx='1'/%3E%3Crect x='5.5' y='6' width='2' height='12' rx='1'/%3E%3Crect x='8.5' y='9' width='7' height='6' rx='1'/%3E%3Crect x='16.5' y='6' width='2' height='12' rx='1'/%3E%3Crect x='19' y='9' width='3' height='6' rx='1'/%3E%3C/svg%3E">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css">
-  <script src="config.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Iron Forge Gym - Transform Your Body, Transform Your Life. Join the premier fitness community today.">
+    <meta name="keywords" content="gym, fitness, personal training, weight loss, muscle building, membership">
+    <meta name="author" content="Iron Forge Gym">
+    <meta property="og:title" content="Iron Forge Gym - Transform Your Body">
+    <meta property="og:description" content="Join the premier fitness community. Expert trainers, modern equipment, results-driven programs.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ironforgegym.com">
+    <title>Iron Forge Gym | Transform Your Body, Transform Your Life</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 
-  <a class="skip-link" href="#main">Skip to content</a>
+    <!-- ===== 3D BACKGROUND (decorative, pointer-events: none) ===== -->
+    <canvas id="webgl" aria-hidden="true"></canvas>
 
-  <div id="preloader" aria-hidden="true">
-    <div class="preloader-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#C084FC" stroke-width="1.6" stroke-linecap="round">
-        <rect x="2" y="9" width="3" height="6" rx="1"/><rect x="5.5" y="6" width="2" height="12" rx="1"/>
-        <rect x="8.5" y="9" width="7" height="6" rx="1"/><rect x="16.5" y="6" width="2" height="12" rx="1"/>
-        <rect x="19" y="9" width="3" height="6" rx="1"/>
-      </svg>
-    </div>
-  </div>
-
-  <div id="noise" aria-hidden="true"></div>
-  <div id="gradient-bg" aria-hidden="true">
-    <div class="blob blob-a"></div>
-    <div class="blob blob-b"></div>
-    <div class="blob blob-c"></div>
-  </div>
-
-  <canvas id="webgl" aria-hidden="true"></canvas>
-
-  <header class="nav" id="nav">
-    <div class="nav-inner">
-      <a href="#home" class="brand" data-magnetic>
-        <span class="brand-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-            <rect x="2" y="9" width="3" height="6" rx="1"/><rect x="5.5" y="6" width="2" height="12" rx="1"/>
-            <rect x="8.5" y="9" width="7" height="6" rx="1"/><rect x="16.5" y="6" width="2" height="12" rx="1"/>
-            <rect x="19" y="9" width="3" height="6" rx="1"/>
-          </svg>
-        </span>
-        <span class="brand-name" id="brand-name">Iron Forge</span>
-      </a>
-
-      <nav class="nav-links" id="nav-links" aria-label="Primary">
-        <a href="#about">About</a>
-        <a href="#benefits">Benefits</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#trainers">Trainers</a>
-        <a href="#gallery">Results</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-
-      <div class="nav-actions">
-        <a href="#join" class="btn btn-primary btn-sm nav-cta">Start Now</a>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+    <!-- ===== PRELOADER ===== -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-logo">
+            <i class="fas fa-dumbbell"></i>
+            <span>Iron Forge</span>
+        </div>
+        <div class="preloader-bar">
+            <div class="preloader-bar-fill"></div>
+        </div>
     </div>
 
-    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-      <a href="#about">About</a>
-      <a href="#benefits">Benefits</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#trainers">Trainers</a>
-      <a href="#gallery">Results</a>
-      <a href="#faq">FAQ</a>
-      <a href="#contact">Contact</a>
-      <a href="#join" class="btn btn-primary btn-block">Start Your Journey</a>
-    </div>
-  </header>
-
-  <main id="main">
-
-    <section class="hero" id="home">
-      <div class="hero-content">
-        <span class="badge reveal">AI-POWERED FITNESS PLATFORM</span>
-        <h1 class="reveal">
-          Train Smarter.<br>
-          <span class="gradient-text">Get Forged.</span>
-        </h1>
-        <p class="hero-sub reveal">
-          Where elite coaching meets artificial intelligence. Iron Forge builds your
-          training, nutrition, and recovery plan in real time - adapting to every rep,
-          every heartbeat, every day.
-        </p>
-        <div class="hero-cta reveal">
-          <a href="#join" class="btn btn-primary btn-lg" data-ripple>Start Your Journey</a>
-          <a href="#benefits" class="btn btn-ghost btn-lg" data-ripple>Explore Programs</a>
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-inner">
+            <a href="#" class="navbar-brand">
+                <i class="fas fa-dumbbell"></i>
+                <span>Iron Forge</span>
+            </a>
+            <div class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="navbar-menu" id="navbarMenu">
+                <ul class="navbar-links">
+                    <li><a href="#hero" class="nav-link active">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#benefits" class="nav-link">Benefits</a></li>
+                    <li><a href="#trainers" class="nav-link">Trainers</a></li>
+                    <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                    <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="navbar-actions">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <a href="#lead-form" class="btn btn-primary btn-sm">Join Now</a>
+                </div>
+            </div>
         </div>
-        <div class="hero-stats reveal" id="hero-stats">
-          <div class="stat">
-            <span class="stat-value"><span data-count="12500">0</span>+</span>
-            <span class="stat-label">Active Members</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value"><span data-count="48">0</span></span>
-            <span class="stat-label">Elite Coaches</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value"><span data-count="94">0</span>%</span>
-            <span class="stat-label">Goal Success</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">24/7</span>
-            <span class="stat-label">AI Coaching</span>
-          </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section id="hero" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
+            <span class="hero-badge">Est. 2024</span>
+            <h1 class="hero-title">Transform Your Body<br><span class="text-accent">Transform Your Life</span></h1>
+            <p class="hero-subtitle">Join Iron Forge Gym and unlock your full potential with world-class trainers, cutting-edge equipment, and a community that pushes you to be your best.</p>
+            <div class="hero-actions">
+                <a href="#lead-form" class="btn btn-primary btn-lg">Start Your Journey <i class="fas fa-arrow-right"></i></a>
+                <a href="#about" class="btn btn-outline btn-lg">Learn More</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-number" data-target="5000">0</span>
+                    <span class="hero-stat-label">Active Members</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number" data-target="50">0</span>
+                    <span class="hero-stat-label">Expert Trainers</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number" data-target="15">0</span>
+                    <span class="hero-stat-label">Years Experience</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number" data-target="98">0</span>
+                    <span class="hero-stat-label">Satisfaction Rate</span>
+                </div>
+            </div>
         </div>
-      </div>
-      <a href="#about" class="scroll-hint" aria-label="Scroll down">
-        <span class="mouse"><span class="wheel"></span></span>
-      </a>
     </section>
 
-    <section class="section about" id="about">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">THE FORGE</span>
-          <h2>Fitness, reengineered by intelligence</h2>
-          <p class="section-lead">
-            Iron Forge isn't another gym. It's a training intelligence platform wrapped in
-            a world-class facility - where AI models your body and a human coach sharpens it.
-          </p>
+    <!-- ===== ABOUT SECTION ===== -->
+    <section id="about" class="section about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">About Us</span>
+                <h2 class="section-title">More Than Just a Gym</h2>
+                <p class="section-desc">We're a community dedicated to helping you achieve your fitness goals through expert guidance, support, and state-of-the-art facilities.</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-image">
+                    <div class="about-image-main">
+                        <i class="fas fa-dumbbell about-image-icon"></i>
+                    </div>
+                    <div class="about-image-card about-image-card-1">
+                        <i class="fas fa-users"></i>
+                        <span>Community</span>
+                    </div>
+                    <div class="about-image-card about-image-card-2">
+                        <i class="fas fa-trophy"></i>
+                        <span>Results</span>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <h3>Building Stronger Bodies & Minds Since 2009</h3>
+                    <p>At Iron Forge Gym, we believe fitness is a journey, not a destination. Our mission is to provide an environment where everyone — from beginners to professional athletes — can achieve their personal best.</p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Expert Trainers</h4>
+                                <p>Certified professionals with years of experience</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Modern Equipment</h4>
+                                <p>State-of-the-art machines and free weights</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Flexible Plans</h4>
+                                <p>Membership options that fit your lifestyle</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Clean Environment</h4>
+                                <p>Sanitized facilities with premium amenities</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="about-grid">
-          <div class="about-card glass reveal">
-            <div class="about-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/>
-              </svg>
-            </div>
-            <h3>Adaptive Intelligence</h3>
-            <p>Your plan rewrites itself nightly based on sleep, recovery, performance and nutrition data. No more stale routines.</p>
-          </div>
-          <div class="about-card glass reveal">
-            <div class="about-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-            </div>
-            <h3>Elite Human Coaches</h3>
-            <p>48 certified specialists review your AI-generated plan and coach you in person. Technology with a heartbeat.</p>
-          </div>
-          <div class="about-card glass reveal">
-            <div class="about-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
-              </svg>
-            </div>
-            <h3>Precision Facilities</h3>
-            <p>Sensor-equipped racks, recovery zones and biometric labs. Every station feeds your AI profile in real time.</p>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <section class="section benefits" id="benefits">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">WHY IRON FORGE</span>
-          <h2>Built for results, engineered for you</h2>
-          <p class="section-lead">Six systems working together so your progress never plateaus.</p>
+    <!-- ===== BENEFITS SECTION ===== -->
+    <section id="benefits" class="section benefits">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Why Choose Us</span>
+                <h2 class="section-title">Benefits You'll Love</h2>
+                <p class="section-desc">Everything you need to stay motivated and reach your fitness goals.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Expert Coaching</h3>
+                    <p>Work with certified trainers who design personalized programs based on your goals, experience, and body type.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Flexible Scheduling</h3>
+                    <p>Open 18+ hours daily with classes running from early morning to late evening. Train on your schedule.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Health Tracking</h3>
+                    <p>Access to fitness assessments, progress tracking, and regular health check-ins to keep you on track.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <h3>Nutrition Guidance</h3>
+                    <p>Personalized meal plans and nutrition counseling to complement your training and maximize results.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Events</h3>
+                    <p>Monthly challenges, group workouts, and social events that make fitness fun and build lasting connections.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shower"></i>
+                    </div>
+                    <h3>Premium Amenities</h3>
+                    <p>Clean locker rooms, sauna, steam room, towel service, and premium toiletries for a complete experience.</p>
+                </div>
+            </div>
         </div>
-        <div class="benefits-grid">
-          <article class="benefit-card glass reveal">
-            <span class="benefit-num">01</span>
-            <h3>AI Lead Analysis</h3>
-            <p>Every application is scored by our intelligence engine so the right coach reaches out with the right plan in minutes.</p>
-          </article>
-          <article class="benefit-card glass reveal">
-            <span class="benefit-num">02</span>
-            <h3>Smart Workouts</h3>
-            <p>Sets, reps and load auto-adjust between visits. Your body talks - the system listens.</p>
-          </article>
-          <article class="benefit-card glass reveal">
-            <span class="benefit-num">03</span>
-            <h3>Nutrition Engine</h3>
-            <p>Macro targets computed from body composition data, recalculated weekly against real-world results.</p>
-          </article>
-          <article class="benefit-card glass reveal">
-            <span class="benefit-num">04</span>
-            <h3>Recovery Lab</h3>
-            <p>Sauna, contrast therapy and biometric tracking keep you training hard, recovering harder.</p>
-          </article>
-          <article class="benefit-card glass reveal">
-            <span class="benefit-num">05</span>
-            <h3>Progress Dashboards</h3>
-            <p>Your strength, body composition and adherence visualized in one clean, beautiful dashboard.</p>
-          </article>
-          <article class="benefit-card glass reveal">
-            <span class="benefit-num">06</span>
-            <h3>Community Forge</h3>
-            <p>Training squads, seasonal challenges and a members-only ecosystem that keeps you accountable.</p>
-          </article>
-        </div>
-      </div>
     </section>
 
-    <section class="section plans" id="plans">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">PROGRAMS</span>
-          <h2>Pick your discipline</h2>
-          <p class="section-lead">Three focused programs, each powered by AI and led by specialists.</p>
+    <!-- ===== TRAINERS SECTION ===== -->
+    <section id="trainers" class="section trainers">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Our Team</span>
+                <h2 class="section-title">Meet Your Trainers</h2>
+                <p class="section-desc">World-class professionals dedicated to your success.</p>
+            </div>
+            <div class="trainers-grid" id="trainersGrid">
+            </div>
         </div>
-        <div class="plans-grid">
-          <article class="plan-card glass reveal">
-            <h3>Strength</h3>
-            <p class="plan-desc">Powerlifting and hypertrophy frameworks with periodized loading.</p>
-            <ul>
-              <li>AI periodized training blocks</li>
-              <li>1-on-1 strength coach check-ins</li>
-              <li>Force plate analysis quarterly</li>
-            </ul>
-          </article>
-          <article class="plan-card glass reveal">
-            <h3>HIIT</h3>
-            <p class="plan-desc">Metabolic conditioning engineered to burn fat and build engine.</p>
-            <ul>
-              <li>Daily adaptive conditioning sessions</li>
-              <li>Heart-rate zone automation</li>
-              <li>Monthly VO2 assessments</li>
-            </ul>
-          </article>
-          <article class="plan-card glass reveal">
-            <h3>Recovery &amp; Mobility</h3>
-            <p class="plan-desc">Regeneration protocols for athletes and demanding schedules.</p>
-            <ul>
-              <li>Personalized mobility flows</li>
-              <li>Contrast &amp; compression therapy</li>
-              <li>Sleep and stress intelligence</li>
-            </ul>
-          </article>
-        </div>
-      </div>
     </section>
 
-    <section class="section pricing" id="pricing">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">MEMBERSHIP</span>
-          <h2>Simple pricing, serious results</h2>
-          <p class="section-lead">Every tier includes the AI engine. Pick the human touch you need.</p>
-          <div class="billing-toggle reveal" role="group" aria-label="Billing period">
-            <button class="toggle-btn active" data-period="monthly">Monthly</button>
-            <button class="toggle-btn" data-period="quarterly">Quarterly</button>
-            <button class="toggle-btn" data-period="yearly">Yearly <span class="save-badge">Save 30%</span></button>
-          </div>
+    <!-- ===== PRICING SECTION ===== -->
+    <section id="pricing" class="section pricing">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Pricing</span>
+                <h2 class="section-title">Choose Your Plan</h2>
+                <p class="section-desc">No hidden fees. Cancel anytime. Start with a free trial session.</p>
+            </div>
+            <div class="pricing-toggle">
+                <span class="pricing-toggle-label" data-period="month">Monthly</span>
+                <label class="switch">
+                    <input type="checkbox" id="pricingToggle">
+                    <span class="switch-slider"></span>
+                </label>
+                <span class="pricing-toggle-label" data-period="year">Annual <span class="pricing-badge">Save 37%</span></span>
+            </div>
+            <div class="pricing-grid" id="pricingGrid">
+            </div>
         </div>
-        <div class="pricing-grid" id="pricing-grid">
-          <article class="price-card glass reveal" data-plan="essential">
-            <h3>Essential</h3>
-            <div class="price"><span class="currency">$</span><span class="amount" data-amount="29">29</span><span class="period">/mo</span></div>
-            <ul>
-              <li>Full facility access</li>
-              <li>AI adaptive workout engine</li>
-              <li>Member dashboard</li>
-              <li>Community challenges</li>
-            </ul>
-            <a href="#join" class="btn btn-ghost btn-block" data-ripple>Get Essential</a>
-          </article>
-          <article class="price-card glass popular reveal" data-plan="pro">
-            <span class="popular-badge">MOST POPULAR</span>
-            <h3>Pro</h3>
-            <div class="price"><span class="currency">$</span><span class="amount" data-amount="59">59</span><span class="period">/mo</span></div>
-            <ul>
-              <li>Everything in Essential</li>
-              <li>Monthly coach review</li>
-              <li>AI nutrition engine</li>
-              <li>Recovery lab access</li>
-              <li>Progress dashboards</li>
-            </ul>
-            <a href="#join" class="btn btn-primary btn-block" data-ripple>Get Pro</a>
-          </article>
-          <article class="price-card glass reveal" data-plan="elite">
-            <h3>Elite</h3>
-            <div class="price"><span class="currency">$</span><span class="amount" data-amount="99">99</span><span class="period">/mo</span></div>
-            <ul>
-              <li>Everything in Pro</li>
-              <li>Weekly 1-on-1 coaching</li>
-              <li>Biometric lab sessions</li>
-              <li>Bi-annual body scans</li>
-              <li>Priority support</li>
-            </ul>
-            <a href="#join" class="btn btn-ghost btn-block" data-ripple>Get Elite</a>
-          </article>
-        </div>
-      </div>
     </section>
 
-    <section class="section trainers" id="trainers">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">THE CREW</span>
-          <h2>Coaches who read your data like a book</h2>
-          <p class="section-lead">Human expertise, amplified by machine intelligence.</p>
+    <!-- ===== TESTIMONIALS SECTION ===== -->
+    <section id="testimonials" class="section testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Testimonials</span>
+                <h2 class="section-title">What Our Members Say</h2>
+                <p class="section-desc">Real results from real people who transformed their lives at Iron Forge.</p>
+            </div>
+            <div class="testimonials-slider" id="testimonialsSlider">
+            </div>
+            <div class="testimonials-dots" id="testimonialsDots"></div>
         </div>
-        <div class="trainers-grid">
-          <article class="trainer-card glass reveal">
-            <div class="trainer-avatar avatar-a">
-              <span>MK</span>
-            </div>
-            <h3>Marcus Kane</h3>
-            <span class="trainer-role">Head Strength Coach</span>
-            <p>Former national powerlifter. 12 years building athletes and executives into machines.</p>
-            <div class="trainer-tags"><span>Powerlifting</span><span>Hypertrophy</span></div>
-          </article>
-          <article class="trainer-card glass reveal">
-            <div class="trainer-avatar avatar-b">
-              <span>SR</span>
-            </div>
-            <h3>Sofia Reyes</h3>
-            <span class="trainer-role">Conditioning Lead</span>
-            <p>Exercise physiologist obsessed with VO2 curves, lactate thresholds and mental grit.</p>
-            <div class="trainer-tags"><span>HIIT</span><span>Endurance</span></div>
-          </article>
-          <article class="trainer-card glass reveal">
-            <div class="trainer-avatar avatar-c">
-              <span>DT</span>
-            </div>
-            <h3>Dana Torres</h3>
-            <span class="trainer-role">Recovery &amp; Mobility</span>
-            <p>Sports physio turned recovery engineer. She will make your joints feel brand new.</p>
-            <div class="trainer-tags"><span>Mobility</span><span>Physio</span></div>
-          </article>
-        </div>
-      </div>
     </section>
 
-    <section class="section testimonials" id="testimonials">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">PROOF</span>
-          <h2>Members. Stories. Results.</h2>
+    <!-- ===== CONTACT + LEAD FORM SECTION ===== -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Get Started</span>
+                <h2 class="section-title">Ready to Transform?</h2>
+                <p class="section-desc">Fill out the form below and our team will reach out to help you begin your fitness journey.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <div class="contact-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <p>123 Fitness Blvd</p>
+                            <p>Los Angeles, CA 90001</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <p>support@ironforgegym.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <p>Mon-Fri: 5:00 AM - 11:00 PM</p>
+                            <p>Sat: 6:00 AM - 9:00 PM</p>
+                            <p>Sun: 7:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="contact-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper" id="lead-form">
+                    <div class="form-container" id="formContainer">
+                        <form id="leadForm" novalidate>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name <span class="required">*</span></label>
+                                    <input type="text" id="firstName" name="first_name" placeholder="John" required minlength="2" maxlength="50" autocomplete="given-name">
+                                    <span class="form-error" id="firstNameError"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name <span class="required">*</span></label>
+                                    <input type="text" id="lastName" name="last_name" placeholder="Doe" required minlength="2" maxlength="50" autocomplete="family-name">
+                                    <span class="form-error" id="lastNameError"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone">Phone Number <span class="required">*</span></label>
+                                    <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567" required pattern="^\+?[\d\s\-()]{10,15}$" autocomplete="tel">
+                                    <span class="form-error" id="phoneError"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" name="email" placeholder="john@email.com" autocomplete="email">
+                                    <span class="form-error" id="emailError"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row form-row-3">
+                                <div class="form-group">
+                                    <label for="age">Age</label>
+                                    <input type="number" id="age" name="age" placeholder="25" min="1" max="120">
+                                    <span class="form-error" id="ageError"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Gender</label>
+                                    <select id="gender" name="gender">
+                                        <option value="">Select...</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Prefer not to say">Prefer not to say</option>
+                                    </select>
+                                    <span class="form-error" id="genderError"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="experience">Experience Level</label>
+                                    <select id="experience" name="experience_level">
+                                        <option value="">Select...</option>
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                    </select>
+                                    <span class="form-error" id="experienceError"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row form-row-2">
+                                <div class="form-group">
+                                    <label for="height">Height (cm)</label>
+                                    <input type="number" id="height" name="height" placeholder="175" min="1" max="300" step="0.1">
+                                    <span class="form-error" id="heightError"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="weight">Weight (kg)</label>
+                                    <input type="number" id="weight" name="weight" placeholder="75" min="1" max="500" step="0.1">
+                                    <span class="form-error" id="weightError"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="goal">Fitness Goal <span class="required">*</span></label>
+                                <select id="goal" name="fitness_goal" required>
+                                    <option value="">Select your primary goal...</option>
+                                    <option value="Weight Loss">Weight Loss</option>
+                                    <option value="Muscle Building">Muscle Building</option>
+                                    <option value="General Fitness">General Fitness</option>
+                                    <option value="Strength Training">Strength Training</option>
+                                    <option value="Endurance">Endurance & Cardio</option>
+                                    <option value="Flexibility">Flexibility & Mobility</option>
+                                    <option value="Rehabilitation">Rehabilitation</option>
+                                    <option value="Sports Training">Sports Specific Training</option>
+                                </select>
+                                <span class="form-error" id="goalError"></span>
+                            </div>
+
+                            <div class="form-row form-row-3">
+                                <div class="form-group">
+                                    <label for="membership">Preferred Membership</label>
+                                    <select id="membership" name="membership_plan">
+                                        <option value="">Select...</option>
+                                        <option value="Basic Monthly">Basic Monthly</option>
+                                        <option value="Standard Monthly">Standard Monthly</option>
+                                        <option value="Premium Monthly">Premium Monthly</option>
+                                        <option value="Annual">Annual</option>
+                                        <option value="Not Sure">Not Sure Yet</option>
+                                    </select>
+                                    <span class="form-error" id="membershipError"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="preferredTime">Preferred Time</label>
+                                    <select id="preferredTime" name="workout_time">
+                                        <option value="">Select...</option>
+                                        <option value="Early Morning (5-7 AM)">Early Morning (5-7 AM)</option>
+                                        <option value="Morning (7-10 AM)">Morning (7-10 AM)</option>
+                                        <option value="Late Morning (10 AM-12 PM)">Late Morning (10 AM-12 PM)</option>
+                                        <option value="Afternoon (12-4 PM)">Afternoon (12-4 PM)</option>
+                                        <option value="Evening (4-7 PM)">Evening (4-7 PM)</option>
+                                        <option value="Night (7-10 PM)">Night (7-10 PM)</option>
+                                        <option value="Flexible">Flexible</option>
+                                    </select>
+                                    <span class="form-error" id="preferredTimeError"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="source">How Did You Hear About Us?</label>
+                                    <select id="source" name="source">
+                                        <option value="">Select...</option>
+                                        <option value="Google">Google Search</option>
+                                        <option value="Instagram">Instagram</option>
+                                        <option value="Facebook">Facebook</option>
+                                        <option value="YouTube">YouTube</option>
+                                        <option value="Friend Referral">Friend / Referral</option>
+                                        <option value="Walk In">Walk In</option>
+                                        <option value="Advertisement">Advertisement</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <span class="form-error" id="sourceError"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row form-row-3">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" name="city" placeholder="Los Angeles" autocomplete="address-level2">
+                                    <span class="form-error" id="cityError"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" id="state" name="state" placeholder="California" autocomplete="address-level1">
+                                    <span class="form-error" id="stateError"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pincode">Pincode / ZIP</label>
+                                    <input type="text" id="pincode" name="pincode" placeholder="90001" maxlength="10">
+                                    <span class="form-error" id="pincodeError"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" name="address" placeholder="123 Main Street" autocomplete="street-address">
+                                <span class="form-error" id="addressError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="medicalConditions">Medical Conditions / Injuries</label>
+                                <textarea id="medicalConditions" name="medical_conditions" rows="2" placeholder="Any injuries, allergies, or medical conditions we should know about..."></textarea>
+                                <span class="form-error" id="medicalConditionsError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notes">Additional Notes</label>
+                                <textarea id="notes" name="notes" rows="2" placeholder="Any other information you'd like to share..."></textarea>
+                                <span class="form-error" id="notesError"></span>
+                            </div>
+
+                            <div class="form-group form-checkbox">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="marketingConsent" name="marketing_consent" required>
+                                    <span class="checkbox-custom"></span>
+                                    I agree to receive communications about offers, updates, and fitness tips from Iron Forge Gym
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-full" id="formSubmit">
+                                <span class="btn-text">Submit Enquiry</span>
+                                <span class="btn-loader"><i class="fas fa-spinner fa-spin"></i> Processing...</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div class="form-success" id="formSuccess" style="display: none;">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Thank You!</h3>
+                        <p id="successMessage">Your enquiry has been received successfully. Our team will contact you shortly.</p>
+                        <div class="success-details" id="successDetails"></div>
+                        <button class="btn btn-primary" onclick="resetForm()">Submit Another</button>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div class="form-error-message" id="formErrorMessage" style="display: none;">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <h3>Something Went Wrong</h3>
+                        <p id="errorMessage">Please try again or contact us directly.</p>
+                        <button class="btn btn-outline" onclick="resetForm()">Try Again</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="slider reveal" id="slider">
-          <div class="slider-track" id="slider-track">
-            <figure class="slide glass">
-              <blockquote>"The AI adjusted my deadlift volume the week I slept poorly - I would never have caught that. 18kg down in five months."</blockquote>
-              <figcaption><strong>Arjun Mehta</strong><span>Pro Member · 5 months</span></figcaption>
-            </figure>
-            <figure class="slide glass">
-              <blockquote>"I've trained for a decade. Nothing ever personalized this hard. My coach reviews my AI plan weekly and it shows."</blockquote>
-              <figcaption><strong>Elena Petrova</strong><span>Elite Member · 8 months</span></figcaption>
-            </figure>
-            <figure class="slide glass">
-              <blockquote>"Joined for the facility, stayed for the intelligence. My bench went from 60kg to 105kg in one year."</blockquote>
-              <figcaption><strong>David Chen</strong><span>Essential Member · 12 months</span></figcaption>
-            </figure>
-            <figure class="slide glass">
-              <blockquote>"The recovery lab plus AI mobility flows fixed a shoulder problem two physios couldn't. Unreal team."</blockquote>
-              <figcaption><strong>Nia Okafor</strong><span>Elite Member · 4 months</span></figcaption>
-            </figure>
-          </div>
-          <div class="slider-controls">
-            <button class="slider-btn" id="slider-prev" aria-label="Previous testimonial">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <div class="slider-dots" id="slider-dots" role="tablist"></div>
-            <button class="slider-btn" id="slider-next" aria-label="Next testimonial">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <section class="section gallery" id="gallery">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">TRANSFORMATIONS</span>
-          <h2>Forged in the Iron Forge</h2>
-          <p class="section-lead">Real members, real data, real timelines.</p>
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="footer-logo">
+                        <i class="fas fa-dumbbell"></i>
+                        <span>Iron Forge</span>
+                    </a>
+                    <p>Building stronger bodies and minds since 2009. Join the Iron Forge community and start your transformation today.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#trainers">Trainers</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="#">Personal Training</a></li>
+                        <li><a href="#">Group Classes</a></li>
+                        <li><a href="#">Weight Loss</a></li>
+                        <li><a href="#">Muscle Building</a></li>
+                        <li><a href="#">Nutrition Coaching</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Fitness Blvd, LA</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> support@ironforgegym.com</li>
+                        <li><i class="fas fa-clock"></i> 5 AM - 11 PM Daily</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Iron Forge Gym. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
         </div>
-        <div class="gallery-grid">
-          <article class="gallery-card glass reveal">
-            <div class="gallery-visual gv-a"><span class="gv-label">JUL</span><span class="gv-label">DEC</span></div>
-            <div class="gallery-meta">
-              <h3>Body Recomposition</h3>
-              <p>-11% body fat · +6kg lean mass</p>
-              <span class="gallery-time">6 months · AI program</span>
-            </div>
-          </article>
-          <article class="gallery-card glass reveal">
-            <div class="gallery-visual gv-b"><span class="gv-label">JAN</span><span class="gv-label">JUN</span></div>
-            <div class="gallery-meta">
-              <h3>Strength Reset</h3>
-              <p>Deadlift 90kg → 160kg</p>
-              <span class="gallery-time">5 months · Strength program</span>
-            </div>
-          </article>
-          <article class="gallery-card glass reveal">
-            <div class="gallery-visual gv-c"><span class="gv-label">MAR</span><span class="gv-label">AUG</span></div>
-            <div class="gallery-meta">
-              <h3>Endurance Engine</h3>
-              <p>VO2 max 38 → 51</p>
-              <span class="gallery-time">5 months · HIIT program</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
+    </footer>
 
-    <section class="section faq" id="faq">
-      <div class="container container-narrow">
-        <div class="section-head reveal">
-          <span class="eyebrow">QUESTIONS</span>
-          <h2>Everything you're wondering</h2>
-        </div>
-        <div class="accordion reveal" id="accordion">
-          <div class="acc-item">
-            <button class="acc-head" aria-expanded="false">
-              <span>How does the AI actually personalize my training?</span>
-              <span class="acc-icon" aria-hidden="true"></span>
-            </button>
-            <div class="acc-body"><p>Every workout, sleep score, and body scan feeds your profile. The engine rewrites your next session's sets, reps and loads based on recovery and progress data - reviewed weekly by your coach.</p></div>
-          </div>
-          <div class="acc-item">
-            <button class="acc-head" aria-expanded="false">
-              <span>Do I need experience to join?</span>
-              <span class="acc-icon" aria-hidden="true"></span>
-            </button>
-            <div class="acc-body"><p>No. The AI detects your experience level from your application and first sessions, then scales difficulty automatically. Beginners get guided movement libraries built into every workout.</p></div>
-          </div>
-          <div class="acc-item">
-            <button class="acc-head" aria-expanded="false">
-              <span>Can I pause my membership?</span>
-              <span class="acc-icon" aria-hidden="true"></span>
-            </button>
-            <div class="acc-body"><p>Yes - up to 60 days per year, free of charge. Your AI profile and history are preserved, so you resume exactly where you left off.</p></div>
-          </div>
-          <div class="acc-item">
-            <button class="acc-head" aria-expanded="false">
-              <span>What happens after I submit the application form?</span>
-              <span class="acc-icon" aria-hidden="true"></span>
-            </button>
-            <div class="acc-body"><p>Our intelligence engine scores your profile within seconds, recommends the ideal membership and coach, and a team member calls you with a personalized plan - usually within the hour.</p></div>
-          </div>
-          <div class="acc-item">
-            <button class="acc-head" aria-expanded="false">
-              <span>Is medical information kept private?</span>
-              <span class="acc-icon" aria-hidden="true"></span>
-            </button>
-            <div class="acc-body"><p>Absolutely. Health data is encrypted, access-controlled, and never shared outside your coaching team. You can delete your data at any time.</p></div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- ===== BACK TO TOP ===== -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
-    <section class="section join" id="join">
-      <div class="container container-narrow">
-        <div class="section-head reveal">
-          <span class="eyebrow">APPLY NOW</span>
-          <h2>Start your transformation</h2>
-          <p class="section-lead">60 seconds. That's all it takes. Our AI will build your starter profile immediately.</p>
-        </div>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/app.js"></script>
 
-        <form class="lead-form glass reveal" id="lead-form" novalidate>
-          <div class="form-grid">
-            <div class="field">
-              <input type="text" id="first_name" name="first_name" placeholder=" " autocomplete="given-name" required>
-              <label for="first_name">First Name *</label>
-              <span class="field-error" data-error-for="first_name"></span>
-            </div>
-            <div class="field">
-              <input type="text" id="last_name" name="last_name" placeholder=" " autocomplete="family-name" required>
-              <label for="last_name">Last Name *</label>
-              <span class="field-error" data-error-for="last_name"></span>
-            </div>
-            <div class="field">
-              <input type="tel" id="phone" name="phone" placeholder=" " autocomplete="tel" required>
-              <label for="phone">Phone *</label>
-              <span class="field-error" data-error-for="phone"></span>
-            </div>
-            <div class="field">
-              <input type="email" id="email" name="email" placeholder=" " autocomplete="email" required>
-              <label for="email">Email *</label>
-              <span class="field-error" data-error-for="email"></span>
-            </div>
-            <div class="field">
-              <input type="number" id="age" name="age" placeholder=" " min="13" max="90" required>
-              <label for="age">Age *</label>
-              <span class="field-error" data-error-for="age"></span>
-            </div>
-            <div class="field">
-              <select id="gender" name="gender" required>
-                <option value="" selected disabled hidden></option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-                <option>Prefer not to say</option>
-              </select>
-              <label for="gender">Gender *</label>
-              <span class="field-error" data-error-for="gender"></span>
-            </div>
-            <div class="field">
-              <input type="number" id="height" name="height" placeholder=" " min="100" max="250" step="0.1" required>
-              <label for="height">Height (cm) *</label>
-              <span class="field-error" data-error-for="height"></span>
-            </div>
-            <div class="field">
-              <input type="number" id="weight" name="weight" placeholder=" " min="30" max="300" step="0.1" required>
-              <label for="weight">Weight (kg) *</label>
-              <span class="field-error" data-error-for="weight"></span>
-            </div>
-            <div class="field field-full">
-              <select id="fitness_goal" name="fitness_goal" required>
-                <option value="" selected disabled hidden></option>
-                <option>Lose Weight</option>
-                <option>Build Muscle</option>
-                <option>Gain Strength</option>
-                <option>Improve Endurance</option>
-                <option>General Fitness</option>
-                <option>Athletic Performance</option>
-              </select>
-              <label for="fitness_goal">Primary Fitness Goal *</label>
-              <span class="field-error" data-error-for="fitness_goal"></span>
-            </div>
-            <div class="field">
-              <select id="membership_plan" name="membership_plan" required>
-                <option value="" selected disabled hidden></option>
-                <option>Essential</option>
-                <option>Pro</option>
-                <option>Elite</option>
-              </select>
-              <label for="membership_plan">Membership Plan *</label>
-              <span class="field-error" data-error-for="membership_plan"></span>
-            </div>
-            <div class="field">
-              <select id="workout_time" name="workout_time" required>
-                <option value="" selected disabled hidden></option>
-                <option>Early Morning (5-7 AM)</option>
-                <option>Morning (7-11 AM)</option>
-                <option>Afternoon (11 AM-3 PM)</option>
-                <option>Evening (3-7 PM)</option>
-                <option>Late Evening (7-11 PM)</option>
-              </select>
-              <label for="workout_time">Preferred Workout Time *</label>
-              <span class="field-error" data-error-for="workout_time"></span>
-            </div>
-            <div class="field">
-              <select id="experience_level" name="experience_level" required>
-                <option value="" selected disabled hidden></option>
-                <option>Beginner</option>
-                <option>Intermediate</option>
-                <option>Advanced</option>
-              </select>
-              <label for="experience_level">Experience Level *</label>
-              <span class="field-error" data-error-for="experience_level"></span>
-            </div>
-            <div class="field field-full">
-              <span class="check-label">Medical Conditions *</span>
-              <div class="check-grid" id="medical_conditions" role="group" aria-label="Medical conditions">
-                <label class="check"><input type="checkbox" name="medical_conditions" value="None" checked><span>None</span></label>
-                <label class="check"><input type="checkbox" name="medical_conditions" value="Asthma"><span>Asthma</span></label>
-                <label class="check"><input type="checkbox" name="medical_conditions" value="Heart Condition"><span>Heart Condition</span></label>
-                <label class="check"><input type="checkbox" name="medical_conditions" value="Joint Pain"><span>Joint Pain</span></label>
-                <label class="check"><input type="checkbox" name="medical_conditions" value="Diabetes"><span>Diabetes</span></label>
-                <label class="check"><input type="checkbox" name="medical_conditions" value="High Blood Pressure"><span>High Blood Pressure</span></label>
-                <label class="check"><input type="checkbox" name="medical_conditions" value="Other"><span>Other</span></label>
-              </div>
-              <span class="field-error" data-error-for="medical_conditions"></span>
-            </div>
-            <div class="field field-full">
-              <input type="text" id="address" name="address" placeholder=" " autocomplete="street-address" required>
-              <label for="address">Address *</label>
-              <span class="field-error" data-error-for="address"></span>
-            </div>
-            <div class="field">
-              <input type="text" id="city" name="city" placeholder=" " autocomplete="address-level2" required>
-              <label for="city">City *</label>
-              <span class="field-error" data-error-for="city"></span>
-            </div>
-            <div class="field">
-              <input type="text" id="state" name="state" placeholder=" " autocomplete="address-level1" required>
-              <label for="state">State *</label>
-              <span class="field-error" data-error-for="state"></span>
-            </div>
-            <div class="field">
-              <input type="text" id="pincode" name="pincode" placeholder=" " autocomplete="postal-code" required>
-              <label for="pincode">Pincode *</label>
-              <span class="field-error" data-error-for="pincode"></span>
-            </div>
-            <div class="field">
-              <label class="consent" for="marketing_consent">
-                <input type="checkbox" id="marketing_consent" name="marketing_consent" required>
-                <span class="consent-box" aria-hidden="true"></span>
-                <span>I agree to be contacted about my application and offers. *</span>
-              </label>
-              <span class="field-error" data-error-for="marketing_consent"></span>
-            </div>
-            <div class="field field-full">
-              <textarea id="notes" name="notes" placeholder=" " rows="3"></textarea>
-              <label for="notes">Notes for your coach (optional)</label>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-btn" data-ripple>
-            <span class="btn-label">Forge My Plan</span>
-            <span class="btn-spinner" aria-hidden="true"></span>
-          </button>
-          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-        </form>
-
-        <div class="form-success glass" id="form-success" role="status" hidden>
-          <div class="success-check" aria-hidden="true">
-            <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" fill="none"/><path fill="none" d="M14 27l8 8 16-16"/></svg>
-          </div>
-          <h3>Welcome to the Forge!</h3>
-          <p>Your profile is being analyzed. A coach will contact you shortly with your personalized plan.</p>
-          <button class="btn btn-ghost" id="success-reset" data-ripple>Submit Another Application</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="section contact" id="contact">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">CONTACT</span>
-          <h2>Come see the forge</h2>
-        </div>
-        <div class="contact-grid">
-          <div class="contact-card glass reveal">
-            <h3>Visit Us</h3>
-            <p id="contact-address"></p>
-          </div>
-          <div class="contact-card glass reveal">
-            <h3>Talk To Us</h3>
-            <p id="contact-phone"></p>
-            <p id="contact-email"></p>
-          </div>
-          <div class="contact-card glass reveal">
-            <h3>Opening Hours</h3>
-            <p id="contact-hours"></p>
-          </div>
-          <div class="contact-card glass reveal">
-            <h3>Follow The Forge</h3>
-            <div class="socials" id="socials"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <span class="brand-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-            <rect x="2" y="9" width="3" height="6" rx="1"/><rect x="5.5" y="6" width="2" height="12" rx="1"/>
-            <rect x="8.5" y="9" width="7" height="6" rx="1"/><rect x="16.5" y="6" width="2" height="12" rx="1"/>
-            <rect x="19" y="9" width="3" height="6" rx="1"/>
-          </svg>
-        </span>
-        <p id="footer-brand"></p>
-      </div>
-      <nav class="footer-links" aria-label="Footer">
-        <a href="#about">About</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#trainers">Trainers</a>
-        <a href="#faq">FAQ</a>
-        <a href="#join">Apply</a>
-      </nav>
-      <p class="footer-meta" id="footer-meta"></p>
-    </div>
-  </footer>
-
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        }
     }
-  }
-  </script>
-  <script type="module" src="assets/js/three-dumbbell.js"></script>
-  <script src="app.js"></script>
+    </script>
+    <script type="module" src="assets/js/three-dumbbell.js"></script>
 </body>
 </html>

@@ -300,7 +300,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     const scale = currentScale(p);
     dumbbell.scale.setScalar(scale);
 
-    dumbbell.rotation.y += (0.012 + Math.abs(scrollVelocity) * 0.045) * dt * 60;
+    dumbbell.rotation.y += (0.004 + Math.abs(scrollVelocity) * 0.012) * dt * 60;
     dumbbell.rotation.x += (mouseY * 0.32 - dumbbell.rotation.x) * 0.05;
     dumbbell.rotation.z += (Math.sin(time * 0.35) * 0.06 - mouseX * 0.12 - dumbbell.rotation.z) * 0.05;
 
@@ -328,7 +328,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
   function updateScroll() {
     const y = window.scrollY;
-    scrollVelocity = y - lastScrollY;
+    scrollVelocity += (y - lastScrollY - scrollVelocity) * 0.08;
     lastScrollY = y;
     const target = computeScrollProgress();
     scrollProgress += (target - scrollProgress) * 0.07;

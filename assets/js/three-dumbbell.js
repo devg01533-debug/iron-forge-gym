@@ -1,12 +1,7 @@
-// ============================================================
-// Iron Forge Gym - 3D Rotating Dumbbell (decorative background)
-// ============================================================
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 (() => {
-  "use strict";
-
   const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const canvas = document.getElementById("webgl");
   const supportsWebGL =
@@ -24,10 +19,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     return;
   }
 
-  const W = () => window.innerWidth;
-  const isMobile = () => W() < 481;
-  const isTablet = () => W() >= 481 && W() < 769;
-
   let renderer, scene, camera, dumbbell, particles, fadeMaterials = [], envRT;
   let mouseX = 0, mouseY = 0, scrollProgress = 0, scrollVelocity = 0;
   let lastScrollY = window.scrollY;
@@ -35,11 +26,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
   const BASE_SCALE = window.innerWidth < 720 ? 0.62 : 1;
   const CAMERA_Z = 8;
-
-  const PARTICLE_COUNT = isMobile() ? 150 : isTablet() ? 300 : 600;
-  const PIXEL_RATIO = isMobile() ? 1 : isTablet() ? 1.5 : 2;
-  const PLATE_SEGMENTS = isMobile() ? 24 : 48;
-  const BAR_SEGMENTS = isMobile() ? 16 : 32;
 
   function init() {
     scene = new THREE.Scene();
@@ -54,11 +40,11 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
     renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: !isMobile(),
+      antialias: true,
       alpha: true,
       powerPreference: "high-performance"
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, PIXEL_RATIO));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -75,7 +61,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     buildDumbbell();
     buildParticles();
     addListeners();
-    applyThemeOpacity();
   }
 
   function addLights() {
@@ -127,14 +112,14 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     dumbbell = new THREE.Group();
 
     const bar = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.085, 0.085, 2.4, BAR_SEGMENTS),
+      new THREE.CylinderGeometry(0.085, 0.085, 2.4, 32),
       metalMaterial(0x0c0c0e, 0.25)
     );
     bar.rotation.z = Math.PI / 2;
     bar.castShadow = true;
     dumbbell.add(bar);
 
-    const plateGeo = new THREE.CylinderGeometry(0.56, 0.56, 0.15, PLATE_SEGMENTS);
+    const plateGeo = new THREE.CylinderGeometry(0.56, 0.56, 0.15, 48);
     const plateMat = metalMaterial(0x111114, 0.35);
 
     const innerPlate = (x) => {
@@ -145,7 +130,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
       dumbbell.add(plate);
 
       const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(0.46, 0.022, 16, isMobile() ? 32 : 64),
+        new THREE.TorusGeometry(0.46, 0.022, 16, 64),
         new THREE.MeshStandardMaterial({
           color: 0x8b5cf6,
           emissive: 0x8b5cf6,
@@ -171,7 +156,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
       return plate;
     };
 
-    const collarGeo = new THREE.CylinderGeometry(0.19, 0.19, 0.2, BAR_SEGMENTS);
+    const collarGeo = new THREE.CylinderGeometry(0.19, 0.19, 0.2, 32);
     const collarMat = metalMaterial(0x0a0a0c, 0.22);
     const collar = (x) => {
       const c = new THREE.Mesh(collarGeo, collarMat);
@@ -197,7 +182,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
       opacity: 0.38
     });
     const softShadow = new THREE.Mesh(
-      new THREE.CircleGeometry(1.35, isMobile() ? 32 : 48),
+      new THREE.CircleGeometry(1.35, 48),
       shadowMat
     );
     softShadow.rotation.x = -Math.PI / 2;
@@ -209,7 +194,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   }
 
   function buildParticles() {
-    const COUNT = PARTICLE_COUNT;
+    const COUNT = 600;
     const positions = new Float32Array(COUNT * 3);
     const colors = new Float32Array(COUNT * 3);
     const purple = new THREE.Color(0x8b5cf6);
@@ -320,11 +305,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     if (Math.abs(target - scrollProgress) < 0.0004) scrollProgress = target;
   }
 
-  function applyThemeOpacity() {
-    const isLight = document.documentElement.getAttribute("data-theme") === "light";
-    canvas.style.opacity = isLight ? "0.45" : "1";
-  }
-
   let lastTime = performance.now();
   function loop(now) {
     if (!running) return;
@@ -347,7 +327,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, PIXEL_RATIO));
       },
       { passive: true }
     );
@@ -367,11 +346,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
         lastTime = performance.now();
         requestAnimationFrame(loop);
       }
-    });
-
-    new MutationObserver(applyThemeOpacity).observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"]
     });
   }
 

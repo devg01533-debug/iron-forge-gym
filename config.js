@@ -3,7 +3,7 @@ window.APP_CONFIG = {
   APP_TAGLINE: "AI-Powered Fitness",
   VERSION: "1.0.0",
 
-  WEBHOOK_URL: "http://localhost:5678/webhook/gym-lead-capture",
+  WEBHOOK_URL: "https://clock-wisconsin-english-villas.trycloudflare.com/webhook/gym-lead-capture",
   REQUEST_TIMEOUT: 15000,
   DEBUG: true,
 

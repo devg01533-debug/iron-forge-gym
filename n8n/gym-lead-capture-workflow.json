@@ -183,7 +183,13 @@
         -400,
         0
       ],
-      "onError": "continueRegularOutput"
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2y8bJ1je03WWxuE",
+          "name": "Supabase account"
+        }
+      }
     },
     {
       "parameters": {
@@ -221,6 +227,75 @@
       "position": [
         80,
         0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $json.lead || $json;\nlet num = String(lead.phone || '').replace(/[^0-9]/g, '');\nif (num.length === 10) num = '91' + num;\nelse if (num.length === 11 && num.startsWith('0')) num = '91' + num.slice(1);\nconst names = [lead.first_name, lead.last_name].filter(Boolean).join(' ') || 'there';\nconst details = [\n  'Name: ' + names,\n  'Plan selected: ' + (lead.membership_plan || 'not selected'),\n  'Fitness goal: ' + (lead.fitness_goal || 'not shared'),\n  'Preferred workout time: ' + (lead.workout_time || 'not shared'),\n  'Experience level: ' + (lead.experience_level || 'not shared')\n].join('\\n');\nconst prompt = 'Write a professional and friendly WhatsApp message (3 to 4 lines, no emojis, no asterisks, no markdown) to ' + names + ', a new gym lead. Encourage and welcome them warmly, briefly mention the plan they selected (' + (lead.membership_plan || 'not yet selected') + '), and close with \"Iron Forge Gym\". Here are the details:\\n' + details;\nreturn [{ json: { number: num, prompt } }];"
+      },
+      "name": "Prepare WhatsApp Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/message/sendText/gymbot",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "YOUR_EVOLUTION_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ number: $json.number, text: $json.text }) }}",
+        "options": {}
+      },
+      "name": "Send WhatsApp Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        -260
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=YOUR_GEMINI_API_KEY",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ systemInstruction: { parts: [{ text: \"You are a professional gym consultant. Write short WhatsApp messages.\" }] }, contents: [{ role: \"user\", parts: [{ text: $json.prompt }] }], generationConfig: { temperature: 0.7, maxOutputTokens: 1024 } }) }}",
+        "options": {}
+      },
+      "name": "AI Generate Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        -260
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const candidates = $json.candidates;\nconst parts = candidates && candidates[0] && candidates[0].content ? candidates[0].content.parts : [];\nconst text = (parts.map(p => p.text || '').join('')).trim();\nreturn [{ json: { number: $node['Prepare WhatsApp Message'].json.number, text: text || 'Hi! Welcome to Iron Forge Gym. A coach will contact you shortly with your membership details.' } }];"
+      },
+      "name": "Format AI Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        20,
+        -260
       ]
     }
   ],
@@ -269,7 +344,7 @@
       "main": [
         [
           {
-            "node": "Build Success Response",
+            "node": "Prepare WhatsApp Message",
             "type": "main",
             "index": 0
           }
@@ -301,6 +376,50 @@
         [
           {
             "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare WhatsApp Message": {
+      "main": [
+        [
+          {
+            "node": "AI Generate Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send WhatsApp Message": {
+      "main": [
+        [
+          {
+            "node": "Build Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Generate Message": {
+      "main": [
+        [
+          {
+            "node": "Format AI Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format AI Message": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp Message",
             "type": "main",
             "index": 0
           }

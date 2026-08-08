@@ -10,7 +10,7 @@ window.APP_CONFIG = {
   CONTACT: {
     EMAIL: "hello@ironforgegym.com",
     PHONE: "+1 (555) 012-3456",
-    ADDRESS: "128 Titan Avenue, Los Angeles, CA 90001",
+    LOCATION: null,
     HOURS: "Mon - Sat · 5:00 AM - 11:00 PM",
     INSTAGRAM: "https://instagram.com/ironforgegym",
     YOUTUBE: "https://youtube.com/@ironforgegym",
@@ -25,9 +25,9 @@ window.APP_CONFIG = {
   },
 
   PRICING: {
-    monthly: { essential: 29, pro: 59, elite: 99 },
-    quarterly: { essential: 74, pro: 149, elite: 249 },
-    yearly: { essential: 249, pro: 499, elite: 839 }
+    monthly: { essential: 999, pro: 1999, elite: 2999 },
+    quarterly: { essential: 2499, pro: 4999, elite: 7499 },
+    yearly: { essential: 8499, pro: 16999, elite: 25499 }
   },
 
   PLANS: ["Essential", "Pro", "Elite"]

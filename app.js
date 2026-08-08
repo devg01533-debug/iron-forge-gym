@@ -31,7 +31,13 @@
     $("#footer-meta").textContent = `${new Date().getFullYear()} ${CONFIG.APP_NAME}. v${CONFIG.VERSION} · Forged with intelligence.`;
 
     if (CONFIG.CONTACT) {
-      $("#contact-address").textContent = CONFIG.CONTACT.ADDRESS;
+      const addrEl = $("#contact-address");
+      const visitCard = addrEl ? addrEl.closest(".contact-card") : null;
+      if (CONFIG.CONTACT.LOCATION) {
+        if (addrEl) addrEl.textContent = CONFIG.CONTACT.LOCATION;
+      } else {
+        if (visitCard) visitCard.remove();
+      }
       $("#contact-phone").textContent = CONFIG.CONTACT.PHONE;
       $("#contact-email").textContent = CONFIG.CONTACT.EMAIL;
       $("#contact-hours").textContent = CONFIG.CONTACT.HOURS;
